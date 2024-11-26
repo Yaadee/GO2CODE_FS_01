@@ -1,8 +1,22 @@
-const { type } = require('express/lib/response')
-const mongoose = require('mongoose')
-const postSchema = mongoose.Schema({
-    title:{type: String, required:true},
-    content:{type: String}
-}
+const mongoose = require("mongoose");
 
-)
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  }
+);
+
+const Post = mongoose.model("Post", postSchema);
+
+module.exports = Post;
