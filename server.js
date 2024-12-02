@@ -1,11 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const postRoutes = require("./routes/postRoutes"); // Import the post routes
-
+const color = require('colors')
+const postRoutes = require("./routes/postRoutes"); 
+const connectDB = require('./config/db')
 // Load environment variables from .env file
-dotenv.config();
+
+dotenv.config({ path: "config/config.env" });
 
 const app = express();
 
@@ -13,23 +14,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB Connected...");
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1); // Exit process with failure
-  }
-};
 connectDB();
 
 // Define routes
-app.use("/api/v1/posts", postRoutes); // All routes related to posts
+app.use("/api/v1/posts", postRoutes); 
 
 // Error handling middleware
 app.use((err, req, res, next) => {
